@@ -7,6 +7,9 @@ import Combine
 @available(OSX 10.15, *)
 public final class NetworkManager: NetworkManagerProtocol {
 
+    public init() {
+    }
+    
     public func get<T: Decodable>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> {
         var urlRequest = URLRequest(url: url)
 
