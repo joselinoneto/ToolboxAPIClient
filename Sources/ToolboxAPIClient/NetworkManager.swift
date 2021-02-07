@@ -5,9 +5,9 @@ import Foundation
 import Combine
 
 @available(OSX 10.15, *)
-final class NetworkManager: NetworkManagerProtocol {
+public final class NetworkManager: NetworkManagerProtocol {
 
-    func get<T: Decodable>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> {
+    public func get<T: Decodable>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> {
         var urlRequest = URLRequest(url: url)
 
         headers.forEach { (key, value) in
