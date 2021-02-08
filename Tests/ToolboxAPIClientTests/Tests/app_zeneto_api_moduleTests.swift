@@ -17,6 +17,8 @@ class app_zeneto_api_moduleTests: XCTestCase {
     static var allTests = [
         ("getUsers", testGetUser),
         ("getUsersWithLimit", testGetUserWithLimit),
+        ("getUsersByID", testGetUserById),
+        ("createUser", testCreateUser)
     ]
     
     override func setUpWithError() throws {
@@ -85,6 +87,29 @@ class app_zeneto_api_moduleTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
+    func testGetUserById() throws {
+        let networkManager = NetworkManager()
+        let userManager = UserNetworkManager(networkController: networkManager)
+        var subscriptions = Set<AnyCancellable>()
+
+        let id: String = "a94bff9b-d0fc-49ba-9a4f-4f9234d16561"
+        userManager.getUser(id: id)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case let .failure(error):
+                    print("Error API: \(error)")
+                    XCTFail()
+                case .finished:
+                    self?.expectation.fulfill()
+                    break
+                }
+            }, receiveValue: { (value: User?) in
+                XCTAssertNotNil(value)
+            }).store(in: &subscriptions)
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
     func testCreateUser() throws {
         let networkManager = NetworkManager()
         let userManager = UserNetworkManager(networkController: networkManager)
@@ -111,12 +136,4 @@ class app_zeneto_api_moduleTests: XCTestCase {
 
         wait(for: [expectation], timeout: timeout)
     }
-    
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

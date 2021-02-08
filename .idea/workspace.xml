@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd742704-9892-4a09-b9d0-b71d17d4b78d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.swiftpm/xcode/xcshareddata/xcbaselines/ToolboxAPIClientTests.xcbaseline/58ED545A-31BB-4484-A7DB-7CF3A75F662D.plist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.swiftpm/xcode/xcshareddata/xcbaselines/ToolboxAPIClientTests.xcbaseline/Info.plist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sources/ToolboxAPIClient/HttpMethodEnum.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sources/ToolboxAPIClient/Endpoint.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Sources/ToolboxAPIClient/Endpoint.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sources/ToolboxAPIClient/Extensions/Endpoint+Extension.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Sources/ToolboxAPIClient/Extensions/Endpoint+Extension.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sources/ToolboxAPIClient/NetworkManager.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Sources/ToolboxAPIClient/NetworkManager.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sources/ToolboxAPIClient/NetworkManagerProtocol.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Sources/ToolboxAPIClient/NetworkManagerProtocol.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Network/Users/UserEndpoint+Extension.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Network/Users/UserEndpoint+Extension.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Network/Users/UserNetworkManagerProtocol.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Network/Users/UserNetworkManagerProtocol.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Tests/app_zeneto_api_moduleTests.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Tests/app_zeneto_api_moduleTests.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/UserNetworkManager.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/ToolboxAPIClientTests/UserNetworkManager.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +28,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
-  <component name="RunManager" selected="XCTest.app_zeneto_api_moduleTests.testCreateUser">
+  <component name="RunManager" selected="XCTest.app_zeneto_api_moduleTests">
     <configuration name="app_zeneto_api_moduleTests" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ToolboxAPIClient" TARGET_NAME="ToolboxAPIClientTests" CONFIG_NAME="Debug" SCHEME_NAME="app_zeneto_api_moduleTests" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" TEST_CLASS="app_zeneto_api_moduleTests" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -52,16 +44,23 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="app_zeneto_api_moduleTests.testGetUserById" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ToolboxAPIClient" TARGET_NAME="ToolboxAPIClientTests" CONFIG_NAME="Debug" SCHEME_NAME="app_zeneto_api_moduleTests.testGetUserById" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" TEST_CLASS="app_zeneto_api_moduleTests" TEST_METHOD="testGetUserById" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.ToolboxAPIClient-Package" />
       <item itemvalue="XCTest.app_zeneto_api_moduleTests.testGetUser" />
       <item itemvalue="XCTest.app_zeneto_api_moduleTests.testCreateUser" />
       <item itemvalue="XCTest.app_zeneto_api_moduleTests" />
+      <item itemvalue="XCTest.app_zeneto_api_moduleTests.testGetUserById" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="XCTest.app_zeneto_api_moduleTests.testCreateUser" />
         <item itemvalue="XCTest.app_zeneto_api_moduleTests" />
+        <item itemvalue="XCTest.app_zeneto_api_moduleTests.testGetUserById" />
+        <item itemvalue="XCTest.app_zeneto_api_moduleTests.testCreateUser" />
         <item itemvalue="XCTest.app_zeneto_api_moduleTests.testGetUser" />
       </list>
     </recent_temporary>
@@ -77,20 +76,7 @@
     </task>
     <servers />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Tests/app_zeneto_api_moduleTests.swift</url>
-          <line>102</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Tests/ToolboxAPIClientTests/Tests/app_zeneto_api_moduleTests.swift</url>
-          <line>108</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="CidrCoverage/ToolboxAPIClient/app_zeneto_api_moduleTests.json" NAME="app_zeneto_api_moduleTests Coverage Results" MODIFIED="1612746229111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="llvm-cov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
