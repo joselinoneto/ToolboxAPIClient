@@ -9,7 +9,8 @@ import ToolboxAPIClient
 protocol UserNetworkManagerProtocol: class {
     var networkController: NetworkManagerProtocol { get }
 
-    func getUsers() -> AnyPublisher<Users, Error>
-    func getUsers(count: Int) -> AnyPublisher<Users, Error>
-    func getUser(id: String) -> AnyPublisher<User, Error>
+    func getUsers() -> AnyPublisher<Users?, Error>
+    func getUsers(count: Int) -> AnyPublisher<Users?, Error>
+    func getUser(id: String) -> AnyPublisher<User?, Error>
+    func createUser(user: User) -> AnyPublisher<User?, Error>
 }

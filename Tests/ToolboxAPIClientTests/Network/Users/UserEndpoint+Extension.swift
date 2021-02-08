@@ -16,4 +16,8 @@ extension Endpoint {
     static func user(id: String) -> Self {
         Endpoint(path: "/users/\(id)")
     }
+    
+    static func createUser(user: User) -> Self {
+        Endpoint(path: "/c706cbfe-6550-4d3a-9d9b-ae19d1425245", method: .post)
+    }
 }

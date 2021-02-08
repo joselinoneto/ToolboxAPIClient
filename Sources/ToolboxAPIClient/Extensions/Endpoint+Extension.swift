@@ -16,6 +16,6 @@ extension Endpoint {
         return url
     }
     public var headers: [String: Any] {
-        ["app-id": "app.zeneto.zeneto-api-module"]
+        ["Content-Type": "application/json", "cache-control": "no-cache"]
     }
 }
