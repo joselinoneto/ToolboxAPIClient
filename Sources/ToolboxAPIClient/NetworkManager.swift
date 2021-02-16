@@ -20,32 +20,18 @@ public final class NetworkManager: NetworkManagerProtocol {
         return urlRequest(type: T.self, httpverb: endPoint.method.rawValue, httpBody: data, url: endPoint.url, headers: endPoint.headers)
     }
 
-    public func put<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable {
-        Empty(completeImmediately: true).eraseToAnyPublisher()
+    public func put<T>(type: T.Type, body: T, endPoint: Endpoint) -> AnyPublisher<T?, Error> where T: Codable {
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.outputFormatting = .prettyPrinted
+        let data = try? jsonEncoder.encode(body)
+        return urlRequest(type: T.self, httpverb: endPoint.method.rawValue, httpBody: data, url: endPoint.url, headers: endPoint.headers)
     }
 
-    public func delete<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable {
-        Empty(completeImmediately: true).eraseToAnyPublisher()
+    public func delete(endpoint: Endpoint) -> AnyPublisher<HTTPURLResponse, Error> {
+        urlRequestNoMap(httpverb: endpoint.method.rawValue, httpBody: nil, url: endpoint.url, headers: endpoint.headers)
     }
 
     public func patch<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable {
         Empty(completeImmediately: true).eraseToAnyPublisher()
-    }
-    
-    private func urlRequest<T: Decodable>(type: T.Type, httpverb: String, httpBody: Data?, url: URL, headers: Headers) -> AnyPublisher<T?, Error> {
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = httpverb
-        urlRequest.httpBody = httpBody
-
-        headers.forEach { (key, value) in
-            if let value = value as? String {
-                urlRequest.setValue(value, forHTTPHeaderField: key)
-            }
-        }
-
-        return URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .map { $0.data }
-            .decode(type: T?.self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
     }
 }

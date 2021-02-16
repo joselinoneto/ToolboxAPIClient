@@ -10,7 +10,7 @@ public protocol NetworkManagerProtocol: class {
 
     func get<T>(type: T.Type, endPoint: Endpoint) -> AnyPublisher<T?, Error> where T: Decodable
     func post<T>(type: T.Type, body: T, endPoint: Endpoint) -> AnyPublisher<T?, Error> where T: Codable
-    func put<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable
-    func delete<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable
+    func put<T>(type: T.Type, body: T, endPoint: Endpoint) -> AnyPublisher<T?, Error> where T: Codable
+    func delete(endpoint: Endpoint) -> AnyPublisher<HTTPURLResponse, Error>
     func patch<T>(type: T.Type, url: URL, headers: Headers) -> AnyPublisher<T, Error> where T: Decodable
 }

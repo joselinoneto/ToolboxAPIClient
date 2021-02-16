@@ -6,20 +6,22 @@ import Combine
 import ToolboxAPIClient
 
 final class UserNetworkManager: UserNetworkManagerProtocol {
+    
+    
     let networkController: NetworkManagerProtocol
 
     init(networkController: NetworkManagerProtocol) {
         self.networkController = networkController
     }
 
-    func getUsers() -> AnyPublisher<Users?, Error> {
+    func getUsers() -> AnyPublisher<[User]?, Error> {
         let endpoint = Endpoint.users
-        return networkController.get(type: Users.self, endPoint: endpoint)
+        return networkController.get(type: [User].self, endPoint: endpoint)
     }
 
-    func getUsers(count: Int) -> AnyPublisher<Users?, Error> {
+    func getUsers(count: Int) -> AnyPublisher<[User]?, Error> {
         let endpoint = Endpoint.users(count: count)
-        return networkController.get(type: Users.self, endPoint: endpoint)
+        return networkController.get(type: [User].self, endPoint: endpoint)
     }
 
     func getUser(id: String) -> AnyPublisher<User?, Error> {
@@ -30,5 +32,15 @@ final class UserNetworkManager: UserNetworkManagerProtocol {
     func createUser(user: User) -> AnyPublisher<User?, Error> {
         let endpoint = Endpoint.createUser(user: user)
         return networkController.post(type: User.self, body: user, endPoint: endpoint)
+    }
+    
+    func updateUser(user: User) -> AnyPublisher<User?, Error> {
+        let endpoint = Endpoint.updateUser(user: user)
+        return networkController.put(type: User.self, body: user, endPoint: endpoint)
+    }
+    
+    func deleteUser(id: String) -> AnyPublisher<HTTPURLResponse, Error> {
+        let endpoint = Endpoint.deleteUser(id: id)
+        return networkController.delete(endpoint: endpoint)
     }
 }

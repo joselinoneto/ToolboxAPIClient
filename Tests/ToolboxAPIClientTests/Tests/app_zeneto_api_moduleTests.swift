@@ -15,10 +15,11 @@ class app_zeneto_api_moduleTests: XCTestCase {
     let timeout: TimeInterval = 5.0
 
     static var allTests = [
-        ("getUsers", testGetUser),
+        ("createUser", testCreateUser),
+        //        ("getUsersByID", testGetUserById),
         ("getUsersWithLimit", testGetUserWithLimit),
-        ("getUsersByID", testGetUserById),
-        ("createUser", testCreateUser)
+        ("getUsers", testGetUser),
+        //        ("deleteUser", testDeleteUserById)
     ]
     
     override func setUpWithError() throws {
@@ -46,8 +47,8 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: Users?) in
-                guard let users = value?.data else {
+            }, receiveValue: { (value: [User]?) in
+                guard let users = value else {
                     XCTFail()
                     return
                 }
@@ -64,7 +65,7 @@ class app_zeneto_api_moduleTests: XCTestCase {
         let networkManager = NetworkManager()
         let userManager = UserNetworkManager(networkController: networkManager)
         var subscriptions = Set<AnyCancellable>()
-        let count: Int = 1000
+        let count: Int = 10
 
         userManager.getUsers(count: count)
             .sink(receiveCompletion: { [weak self] completion in
@@ -76,8 +77,8 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: Users?) in
-                guard let users = value?.data else {
+            }, receiveValue: { (value: [User]?) in
+                guard let users = value else {
                     XCTFail()
                     return
                 }
@@ -87,39 +88,12 @@ class app_zeneto_api_moduleTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
-    func testGetUserById() throws {
-        let networkManager = NetworkManager()
-        let userManager = UserNetworkManager(networkController: networkManager)
-        var subscriptions = Set<AnyCancellable>()
-
-        let id: String = "a94bff9b-d0fc-49ba-9a4f-4f9234d16561"
-        userManager.getUser(id: id)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    print("Error API: \(error)")
-                    XCTFail()
-                case .finished:
-                    self?.expectation.fulfill()
-                    break
-                }
-            }, receiveValue: { (value: User?) in
-                XCTAssertNotNil(value)
-            }).store(in: &subscriptions)
-
-        wait(for: [expectation], timeout: timeout)
-    }
-
     func testCreateUser() throws {
         let networkManager = NetworkManager()
         let userManager = UserNetworkManager(networkController: networkManager)
         var subscriptions = Set<AnyCancellable>()
-        
-        let user = User(id: "a94bff9b-d0fc-49ba-9a4f-4f9234d16561",
-                        firstName: "Mackenzie",
-                        lastName: "Sebire",
-                        email: "msebire0@diigo.com")
 
+        let user = User(id: nil, firstName: "Mackenzie", lastName: "Sebire", email: "msebire0@diigo.com")
         userManager.createUser(user: user)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -136,4 +110,81 @@ class app_zeneto_api_moduleTests: XCTestCase {
 
         wait(for: [expectation], timeout: timeout)
     }
+    
+    func testUpdateUser() throws {
+        let networkManager = NetworkManager()
+        let userManager = UserNetworkManager(networkController: networkManager)
+        var subscriptions = Set<AnyCancellable>()
+
+//        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
+//                        firstName: "Mackenzie",
+//                        lastName: "Sebire",
+//                        email: "msebire0@diigo.com")
+        
+        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
+                        firstName: "Zé",
+                        lastName: "Pqno",
+                        email: "pqno@ze.com")
+        
+        userManager.updateUser(user: user)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case let .failure(error):
+                    print("Error API: \(error)")
+                    XCTFail()
+                case .finished:
+                    self?.expectation.fulfill()
+                    break
+                }
+            }, receiveValue: { (value: User?) in
+                XCTAssertNotNil(value)
+            }).store(in: &subscriptions)
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+//    func test1GetUserById() throws {
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//
+//        userManager.getUser(id: id)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: User?) in
+//                XCTAssertNotNil(value)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
+
+//    func test5DeleteUserById() throws {
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//
+//        userManager.deleteUser(id: "")
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: HTTPURLResponse) in
+//                let statusCode: Int = value.statusCode
+//                XCTAssertEqual(200, statusCode)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
 }
