@@ -11,14 +11,14 @@ import Combine
 
 @testable import ToolboxAPIClient
 class app_zeneto_api_moduleTests: XCTestCase {
-    let expectation = XCTestExpectation(description: "GET USER DATA FROM MOCKY.IO")
+    let expectation = XCTestExpectation(description: "GET PROFESSIONS DATA FROM MOCKS")
     let timeout: TimeInterval = 5.0
 
     static var allTests = [
-        ("createUser", testCreateUser),
+        ("getProfessions", testGetProfessions),
         //        ("getUsersByID", testGetUserById),
-        ("getUsersWithLimit", testGetUserWithLimit),
-        ("getUsers", testGetUser),
+//        ("getUsersWithLimit", testGetUserWithLimit),
+//        ("getUsers", testGetUser),
         //        ("deleteUser", testDeleteUserById)
     ]
     
@@ -30,14 +30,15 @@ class app_zeneto_api_moduleTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testGetUser() throws {
+    func testGetProfessions() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let networkManager = NetworkManager()
-        let userManager = UserNetworkManager(networkController: networkManager)
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+        let professionWorker = ProfessionsManagerAPI()
         var subscriptions = Set<AnyCancellable>()
 
-        userManager.getUsers()
+        professionWorker.getProfessions()
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case let .failure(error):
@@ -47,86 +48,24 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: [User]?) in
-                guard let users = value else {
+            }, receiveValue: { (value: [ProfessionDto]?) in
+                guard let professions = value else {
                     XCTFail()
                     return
                 }
-                XCTAssertGreaterThan(users.count, 0)
-            }).store(in: &subscriptions)
-
-        wait(for: [expectation], timeout: timeout)
-    }
-
-
-    func testGetUserWithLimit() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let networkManager = NetworkManager()
-        let userManager = UserNetworkManager(networkController: networkManager)
-        var subscriptions = Set<AnyCancellable>()
-        let count: Int = 10
-
-        userManager.getUsers(count: count)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    print("Error API: \(error)")
-                    XCTFail()
-                case .finished:
-                    self?.expectation.fulfill()
-                    break
-                }
-            }, receiveValue: { (value: [User]?) in
-                guard let users = value else {
-                    XCTFail()
-                    return
-                }
-                XCTAssertEqual(users.count, count)
-            }).store(in: &subscriptions)
-
-        wait(for: [expectation], timeout: timeout)
-    }
-
-    func testCreateUser() throws {
-        let networkManager = NetworkManager()
-        let userManager = UserNetworkManager(networkController: networkManager)
-        var subscriptions = Set<AnyCancellable>()
-
-        let user = User(id: nil, firstName: "Mackenzie", lastName: "Sebire", email: "msebire0@diigo.com")
-        userManager.createUser(user: user)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    print("Error API: \(error)")
-                    XCTFail()
-                case .finished:
-                    self?.expectation.fulfill()
-                    break
-                }
-            }, receiveValue: { (value: User?) in
-                XCTAssertNotNil(value)
+                XCTAssertGreaterThan(professions.count, 0)
             }).store(in: &subscriptions)
 
         wait(for: [expectation], timeout: timeout)
     }
     
-    func testUpdateUser() throws {
-        let networkManager = NetworkManager()
-        let userManager = UserNetworkManager(networkController: networkManager)
+    func testCreateProfession() throws {
+        let professionWorker = ProfessionsManagerAPI()
         var subscriptions = Set<AnyCancellable>()
-
-//        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
-//                        firstName: "Mackenzie",
-//                        lastName: "Sebire",
-//                        email: "msebire0@diigo.com")
         
-        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
-                        firstName: "Zé",
-                        lastName: "Pqno",
-                        email: "pqno@ze.com")
-        
-        userManager.updateUser(user: user)
+        let profession = ProfessionDto(id: nil, title: "iOS Engineer")
+        professionWorker
+            .createProfession(profession)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case let .failure(error):
@@ -136,12 +75,125 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: User?) in
+            }, receiveValue: { (value: ProfessionDto?) in
                 XCTAssertNotNil(value)
             }).store(in: &subscriptions)
-
+        
         wait(for: [expectation], timeout: timeout)
     }
+    
+//    func testGetUser() throws {
+//        // This is an example of a functional test case.
+//        // Use XCTAssert and related functions to verify your tests produce the correct results.
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//
+//        userManager.getUsers()
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: [User]?) in
+//                guard let users = value else {
+//                    XCTFail()
+//                    return
+//                }
+//                XCTAssertGreaterThan(users.count, 0)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
+
+
+//    func testGetUserWithLimit() throws {
+//        // This is an example of a functional test case.
+//        // Use XCTAssert and related functions to verify your tests produce the correct results.
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//        let count: Int = 10
+//
+//        userManager.getUsers(count: count)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: [User]?) in
+//                guard let users = value else {
+//                    XCTFail()
+//                    return
+//                }
+//                XCTAssertEqual(users.count, count)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
+//
+//    func testCreateUser() throws {
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//
+//        let user = User(id: nil, firstName: "Mackenzie", lastName: "Sebire", email: "msebire0@diigo.com")
+//        userManager.createUser(user: user)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: User?) in
+//                XCTAssertNotNil(value)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
+//
+//    func testUpdateUser() throws {
+//        let networkManager = NetworkManager()
+//        let userManager = UserNetworkManager(networkController: networkManager)
+//        var subscriptions = Set<AnyCancellable>()
+//
+////        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
+////                        firstName: "Mackenzie",
+////                        lastName: "Sebire",
+////                        email: "msebire0@diigo.com")
+//
+//        let user = User(id: "763A636A-E0D5-4077-AB97-95DB2226B26D",
+//                        firstName: "Zé",
+//                        lastName: "Pqno",
+//                        email: "pqno@ze.com")
+//
+//        userManager.updateUser(user: user)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case let .failure(error):
+//                    print("Error API: \(error)")
+//                    XCTFail()
+//                case .finished:
+//                    self?.expectation.fulfill()
+//                    break
+//                }
+//            }, receiveValue: { (value: User?) in
+//                XCTAssertNotNil(value)
+//            }).store(in: &subscriptions)
+//
+//        wait(for: [expectation], timeout: timeout)
+//    }
 
 //    func test1GetUserById() throws {
 //        let networkManager = NetworkManager()
