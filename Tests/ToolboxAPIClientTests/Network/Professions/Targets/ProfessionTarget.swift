@@ -34,17 +34,18 @@ extension ProfessionTarget: TargetType {
     }
     
     public var baseURL: URL {
-        URL(string: "https://mockapivapor.herokuapp.com/")!
+        URL(string: "https://run.mocky.io/v3/")!
     }
     
     public var path: String {
         switch self {
         case .getProfessions,
-             .getProfessionsWith,
-             .postProfession:
-            return "professions"
+             .getProfessionsWith:
+            return "8ae911b5-f8b5-4b67-a341-e85fbc0e635a"
+        case .postProfession:
+            return "1131699f-4cfe-4efc-b196-bba55d3e0c01"
         case .getProfessionBy(let professionId):
-            return "professions/\(professionId)"
+            return "8ae911b5-f8b5-4b67-a341-e85fbc0e635a/\(professionId)"
         }
     }
     
