@@ -11,15 +11,12 @@ import Combine
 
 @testable import ToolboxAPIClient
 class app_zeneto_api_moduleTests: XCTestCase {
-    let expectation = XCTestExpectation(description: "GET PROFESSIONS DATA FROM MOCKS")
+    let expectation = XCTestExpectation(description: "GET STORIES DATA FROM MOCKS")
     let timeout: TimeInterval = 5.0
 
     static var allTests = [
-        ("getProfessions", testGetProfessions),
-        //        ("getUsersByID", testGetUserById),
-//        ("getUsersWithLimit", testGetUserWithLimit),
-//        ("getUsers", testGetUser),
-        //        ("deleteUser", testDeleteUserById)
+        ("getStories", testGetStorys),
+        ("createStrory", testCreateStory)
     ]
     
     override func setUpWithError() throws {
@@ -30,15 +27,15 @@ class app_zeneto_api_moduleTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testGetProfessions() throws {
+    func testGetStorys() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 //        let networkManager = NetworkManager()
 //        let userManager = UserNetworkManager(networkController: networkManager)
-        let professionWorker = ProfessionsManagerAPI()
+        let professionWorker = StoryManagerAPI()
         var subscriptions = Set<AnyCancellable>()
 
-        professionWorker.getProfessions()
+        professionWorker.getStorys()
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case let .failure(error):
@@ -48,7 +45,7 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: [ProfessionDto]?) in
+            }, receiveValue: { (value: [StoryDto]?) in
                 guard let professions = value else {
                     XCTFail()
                     return
@@ -59,13 +56,13 @@ class app_zeneto_api_moduleTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
     }
     
-    func testCreateProfession() throws {
-        let professionWorker = ProfessionsManagerAPI()
+    func testCreateStory() throws {
+        let professionWorker = StoryManagerAPI()
         var subscriptions = Set<AnyCancellable>()
         
-        let profession = ProfessionDto(id: nil, title: "iOS Engineer")
+        let profession = StoryDto(id: nil, title: "iOS Engineer")
         professionWorker
-            .createProfession(profession)
+            .createStory(profession)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case let .failure(error):
@@ -75,7 +72,7 @@ class app_zeneto_api_moduleTests: XCTestCase {
                     self?.expectation.fulfill()
                     break
                 }
-            }, receiveValue: { (value: ProfessionDto?) in
+            }, receiveValue: { (value: StoryDto?) in
                 XCTAssertNotNil(value)
             }).store(in: &subscriptions)
         

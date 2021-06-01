@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ProfessionDto: Codable {
-    let id: String?
+public struct StoryDto: Codable {
+    let id: UUID?
     let title: String
 }
