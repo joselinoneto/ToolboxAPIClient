@@ -79,21 +79,4 @@ public class BaseNetworkWorker<T> where T: Codable {
             .decode(type: T?.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
-    
-    //    internal func urlRequestNoMap(httpverb: String, httpBody: Data?, url: URL, headers: Headers) -> AnyPublisher<HTTPURLResponse, Error> {
-    //        var urlRequest = URLRequest(url: url)
-    //        urlRequest.httpMethod = httpverb
-    //        urlRequest.httpBody = httpBody
-    //
-    //        headers.forEach { (key, value) in
-    //            if let value = value as? String {
-    //                urlRequest.setValue(value, forHTTPHeaderField: key)
-    //            }
-    //        }
-    //
-    //        return URLSession.shared.dataTaskPublisher(for: urlRequest)
-    //            .compactMap { $0.response as? HTTPURLResponse }
-    //            .mapError { $0 as Error }
-    //            .eraseToAnyPublisher()
-    //    }
 }
