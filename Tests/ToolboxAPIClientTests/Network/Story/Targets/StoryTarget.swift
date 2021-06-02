@@ -34,7 +34,7 @@ extension StoryTarget: TargetType {
     }
     
     public var baseURL: URL {
-        URL(string: "https://astronomia-api.herokuapp.com/")!
+        URL(string: "https://astronomia-staging.herokuapp.com/")!
     }
     
     public var path: String {
@@ -59,6 +59,6 @@ extension StoryTarget: TargetType {
     }
     
     public var headers: [String : String]? {
-        ["Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIxMTY3MDNFOS1CRjdFLTQyMEEtQjhFRi1BMjY1MTI5NzlEMjEiLCJzdWIiOiJhc3Ryb25vbWlhX2FwaSIsImV4cCI6NjQwOTIyMTEyMDAsImFkbWluIjp0cnVlfQ.D-ZoYLLVfdGaXrIfVl5BlKslN2oFezBpa0PguKCXmhs"]
+        ["Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiI4NUNFMjJCMi0xMzExLTRCRjgtOUIwMy1GQTFCREYzQkUyOTIiLCJzdWIiOiJhc3Ryb25vbWlhX2FwaSIsImV4cCI6NjQwOTIyMTEyMDAsImFkbWluIjp0cnVlfQ.0AR701FCTjs9A90Nev5GGgVujnXwV4wgSkCrqjVkhYg"]
     }
 }

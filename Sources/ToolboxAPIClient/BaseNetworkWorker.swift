@@ -19,13 +19,15 @@ public class BaseNetworkWorker<T> where T: Codable {
     private var finalUrl: URL {
         get {
             var components = URLComponents(url: targetType.baseURL, resolvingAgainstBaseURL: true)
+            print(targetType)
             if targetType.queryString.count > 0 {
                 components?.queryItems = targetType.queryString
             }
             guard let url = components?.url else {
                 preconditionFailure("Invalid URL components")
             }
-            return url
+            let finalUrl: URL = url.appendingPathComponent(targetType.path)
+            return finalUrl
         }
     }
     
