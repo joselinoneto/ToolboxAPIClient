@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-@available(OSX 10.15, *)
+@available(iOS 15.0, *)
 public class BaseNetworkWorker<T> where T: Codable {
     private var targetType: TargetType
     
@@ -52,7 +52,7 @@ public class BaseNetworkWorker<T> where T: Codable {
         }
     }
     
-    public func urlRequest(contentBody: T? = nil) -> AnyPublisher<T?, Error> {
+    public func urlRequest(contentBody: T? = nil) async throws -> T? {
         // set route with base and path
         var urlRequest = URLRequest(url: finalUrl)
         
@@ -72,9 +72,8 @@ public class BaseNetworkWorker<T> where T: Codable {
             urlRequest.httpBody = data
         }
         
-        return URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .map { $0.data }
-            .decode(type: T?.self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
+        let decoder = JSONDecoder()
+        return try decoder.decode(T?.self, from: data)
     }
 }
