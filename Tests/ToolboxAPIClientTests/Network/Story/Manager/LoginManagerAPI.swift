@@ -10,7 +10,8 @@ import ToolboxAPIClient
 
 public class LoginManagerAPI: LoginRequestable {
     public func login(email: String, password: String) async throws -> LoginDto? {
-        try await BaseNetworkWorker<LoginDto>(target: LoginTarget.login(email: email, password: password)).urlRequest()
+        let login: LoginDto = LoginDto(email: email, password: password, token: nil)
+        return try await BaseNetworkWorker<LoginDto>(target: LoginTarget.login).urlRequest(contentBody: login)
     }
     
     public func createUser(email: String, password: String) async throws -> LoginDto? {
@@ -20,9 +21,5 @@ public class LoginManagerAPI: LoginRequestable {
     
     public func me() async throws -> UserDto? {
         try await BaseNetworkWorker<UserDto>(target: LoginTarget.me).urlRequest()
-    }
-    
-    public init() {
-
     }
 }

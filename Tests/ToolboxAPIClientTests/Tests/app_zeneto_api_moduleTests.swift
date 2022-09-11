@@ -13,16 +13,17 @@ import Combine
 class app_zeneto_api_moduleTests: XCTestCase {
     let expectation = XCTestExpectation(description: "CREATE AND LOGIN")
     let timeout: TimeInterval = 5.0
-    let email: String = "".getRandomEmail()
-    let password: String = "".getRandomPassword()
+    var email: String!
+    var password: String!
 
     static var allTests = [
-        ("createUser", testCreateUser),
-        ("loginUser", testLoginUser),
+        ("createUser", testCreateUser)
     ]
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        email = "".getRandomEmail()
+        password = "".getRandomPassword()
     }
 
     override func tearDownWithError() throws {
@@ -31,14 +32,29 @@ class app_zeneto_api_moduleTests: XCTestCase {
 
     func testCreateUser() async throws {
         let userWorker = LoginManagerAPI()
+        
+        // create user
         let user = try await userWorker.createUser(email: email, password: password)
         XCTAssertNotNil(user)
-    }
-    
-    func testLoginUser() async throws {
-        let userWorker = LoginManagerAPI()
-        let user = try await userWorker.login(email: email, password: password)
-        XCTAssertNotNil(user)
+        XCTAssertNotNil(user?.token)
+        XCTAssertNil(user?.email)
+        XCTAssertNil(user?.password)
+        
+        // login user
+        let login = try await userWorker.login(email: email, password: password)
+        XCTAssertNotNil(login)
+        XCTAssertNotNil(login?.token)
+        XCTAssertNil(login?.email)
+        XCTAssertNil(login?.password)
+        
+        let defaults = UserDefaults.standard
+        defaults.set(login?.token, forKey: "token")
+        
+        // valide email with created user
+        let me = try await userWorker.me()
+        XCTAssertNotNil(me)
+        XCTAssertEqual(email, me?.email)
+        
     }
 }
 
