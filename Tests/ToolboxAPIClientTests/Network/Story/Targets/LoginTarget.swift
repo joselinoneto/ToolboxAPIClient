@@ -16,7 +16,7 @@ public protocol LoginRequestable {
 
 public enum LoginTarget {
     case createUser
-    case login(email: String, password: String)
+    case login
     case me
 }
 
@@ -36,7 +36,7 @@ extension LoginTarget: TargetType {
         switch self {
         case .createUser:
             return "create"
-        case .login(_, _):
+        case .login:
             return "login"
         case .me:
             return "me"
@@ -47,14 +47,20 @@ extension LoginTarget: TargetType {
         switch self {
         case .createUser:
             return .post
-        case .login(_, _):
+        case .login:
             return .post
         case .me:
             return .get
         }
     }
-    
+
     public var headers: [String : String]? {
-        nil
+        // Bad pratice! Basic Unit Testing.
+        // Must use Keychain
+        let defaults = UserDefaults.standard
+        if let token = defaults.string(forKey: "token") {
+            return ["Authorization": "Bearer  \(token)"]
+        }
+        return nil
     }
 }

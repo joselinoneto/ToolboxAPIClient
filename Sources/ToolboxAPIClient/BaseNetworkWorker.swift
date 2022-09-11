@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 
-@available(iOS 15.0, *)
 public class BaseNetworkWorker<T> where T: Codable {
     private var targetType: TargetType
     
@@ -71,7 +70,7 @@ public class BaseNetworkWorker<T> where T: Codable {
             let data = try? jsonEncoder.encode(httpBody)
             urlRequest.httpBody = data
         }
-        
+
         let (data, _) = try await URLSession.shared.data(for: urlRequest)
         let decoder = JSONDecoder()
         return try decoder.decode(T?.self, from: data)
