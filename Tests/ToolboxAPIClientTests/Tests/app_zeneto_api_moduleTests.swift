@@ -11,8 +11,8 @@ import Combine
 
 @testable import ToolboxAPIClient
 class app_zeneto_api_moduleTests: XCTestCase {
-    let expectation = XCTestExpectation(description: "CREATE AND LOGIN")
-    let timeout: TimeInterval = 5.0
+    var expectation = XCTestExpectation(description: "CREATE AND LOGIN")
+    let timeout: TimeInterval = 15.0
     var email: String!
     var password: String!
 
@@ -54,7 +54,49 @@ class app_zeneto_api_moduleTests: XCTestCase {
         let me = try await userWorker.me()
         XCTAssertNotNil(me)
         XCTAssertEqual(email, me?.email)
-        
+
+        defaults.removeObject(forKey: "token")
+        defaults.synchronize()
+    }
+
+    func testErrorLoginUser() throws {
+        let userWorker = LoginManagerAPI()
+        expectation = expectation(description: "error login")
+        // login user
+        Task {
+            do {
+                _ = try await userWorker.me()
+            } catch {
+                print(error.localizedDescription)
+                let exception = error as? APIErrors
+                XCTAssertNotNil(exception)
+                XCTAssertEqual(exception, APIErrors.authenticationError)
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout)
+    }
+
+    func testNotFound() throws {
+        let userWorker = LoginManagerAPI()
+        expectation = expectation(description: "error login")
+        // login user
+        Task {
+            do {
+                _ = try await userWorker.notFound()
+            } catch {
+                print(error.localizedDescription)
+                let exception = error as? APIErrors
+                XCTAssertNotNil(exception)
+                XCTAssertEqual(exception, APIErrors.notFound)
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout)
     }
 }
 
