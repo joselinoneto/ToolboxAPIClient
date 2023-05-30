@@ -8,8 +8,10 @@
 import Foundation
 import Combine
 
-public class BaseNetworkWorker<T> where T: Codable {
+public class BaseNetworkWorker<T, E> where T: Codable, E: Codable {
     private var targetType: TargetType
+    private let validStatusCode: [Int] = [200, 201]
+    private let invalidStatusCode: [Int] = [401, 404]
     
     public init(target: TargetType) {
         self.targetType = target
@@ -52,6 +54,9 @@ public class BaseNetworkWorker<T> where T: Codable {
     }
     
     public func urlRequest(contentBody: T? = nil) async throws -> T? {
+        // Decoder
+        let decoder = JSONDecoder()
+
         // set route with base and path
         var urlRequest = URLRequest(url: finalUrl)
         
@@ -67,12 +72,33 @@ public class BaseNetworkWorker<T> where T: Codable {
         if let httpBody = contentBody {
             let jsonEncoder = JSONEncoder()
             jsonEncoder.outputFormatting = .prettyPrinted
-            let data = try? jsonEncoder.encode(httpBody)
-            urlRequest.httpBody = data
+            let bodyData = try? jsonEncoder.encode(httpBody)
+            urlRequest.httpBody = bodyData
         }
 
-        let (data, _) = try await URLSession.shared.data(for: urlRequest)
-        let decoder = JSONDecoder()
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIErrors.invalidResponse
+        }
+
+        guard !invalidStatusCode.contains(httpResponse.statusCode) else {
+            switch httpResponse.statusCode {
+            case 401:
+                throw APIErrors.authenticationError
+            case 404:
+                throw APIErrors.notFound
+            default:
+                let error: E = try decoder.decode(E.self, from: data)
+                throw APIErrors.serverError(error: error)
+            }
+        }
+
+        guard validStatusCode.contains(httpResponse.statusCode) else {
+            let error: E = try decoder.decode(E.self, from: data)
+            throw APIErrors.serverError(error: error)
+        }
+
         return try decoder.decode(T?.self, from: data)
     }
 }

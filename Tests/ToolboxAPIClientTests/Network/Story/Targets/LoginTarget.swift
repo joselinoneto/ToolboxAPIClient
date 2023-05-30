@@ -12,12 +12,14 @@ public protocol LoginRequestable {
     func createUser(email: String, password: String) async throws -> LoginDto?
     func login(email: String, password: String) async throws -> LoginDto?
     func me() async throws -> UserDto?
+    func notFound() async throws
 }
 
 public enum LoginTarget {
     case createUser
     case login
     case me
+    case notFound
 }
 
 extension LoginTarget: TargetType {
@@ -40,6 +42,8 @@ extension LoginTarget: TargetType {
             return "login"
         case .me:
             return "me"
+        case .notFound:
+            return "notfound"
         }
     }
     
@@ -50,6 +54,8 @@ extension LoginTarget: TargetType {
         case .login:
             return .post
         case .me:
+            return .get
+        case .notFound:
             return .get
         }
     }
