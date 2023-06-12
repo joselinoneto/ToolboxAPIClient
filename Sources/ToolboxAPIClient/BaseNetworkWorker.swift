@@ -56,6 +56,7 @@ public class BaseNetworkWorker<T, E> where T: Codable, E: Codable {
     public func urlRequest(contentBody: T? = nil) async throws -> T? {
         // Decoder
         let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
 
         // set route with base and path
         var urlRequest = URLRequest(url: finalUrl)
