@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Combine
+import OSLog
 
 public class BaseNetworkWorker<T, E> where T: Codable, E: Codable {
     private var targetType: TargetType
@@ -77,29 +77,44 @@ public class BaseNetworkWorker<T, E> where T: Codable, E: Codable {
             urlRequest.httpBody = bodyData
         }
 
+        Logger.apiLog.debug("API: \(urlRequest)")
+
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
+            Logger.apiLog.critical("API: \(APIErrors.invalidResponse.localizedDescription)")
             throw APIErrors.invalidResponse
         }
 
         guard !invalidStatusCode.contains(httpResponse.statusCode) else {
             switch httpResponse.statusCode {
             case 401:
+                Logger.apiLog.warning("API: \(APIErrors.authenticationError)")
                 throw APIErrors.authenticationError
             case 404:
+                Logger.apiLog.error("API: \(APIErrors.notFound)")
                 throw APIErrors.notFound
             default:
                 let error: E = try decoder.decode(E.self, from: data)
+                Logger.apiLog.critical("API: \(APIErrors.serverError(error: error))")
                 throw APIErrors.serverError(error: error)
             }
         }
 
         guard validStatusCode.contains(httpResponse.statusCode) else {
             let error: E = try decoder.decode(E.self, from: data)
+            Logger.apiLog.critical("API: \(APIErrors.serverError(error: error))")
             throw APIErrors.serverError(error: error)
         }
 
+//        if let body = String(data: data, encoding: .utf8) {
+//            Logger.apiLog.debug("API: \(body)")
+//        }
+
         return try decoder.decode(T?.self, from: data)
     }
+}
+
+public extension Logger {
+    static let apiLog = Logger(subsystem: "group.app.zeneto.daily.apod", category: "ApodAPI")
 }
